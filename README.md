@@ -18,7 +18,7 @@ Este documento apresenta a especificação técnica do Oxid Gateway, um API Gate
 
 API Gateways são componentes críticos em arquiteturas modernas de software. Em ambientes corporativos como a Weg, a implantação de gateways open-source (ex.: Kong Gateway) frequentemente resulta em desafios operacionais relacionados à configuração e troubleshooting. A ausência de ferramentas eficazes para debug em produção dificulta a identificação precisa de falhas, especialmente quando o problema está relacionado a transformações de dados ou regras de roteamento.
 
-![./static/debug.jpg]
+![Debug image](./static/debug.jpg)
 
 ### Justificativa
 

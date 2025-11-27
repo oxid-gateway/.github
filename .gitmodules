@@ -1,0 +1,9 @@
+[submodule "reverse-proxy"]
+	path = reverse-proxy
+	url = git@github.com:oxid-gateway/reverse-proxy.git
+[submodule "admin-api"]
+	path = admin-api
+	url = git@github.com:oxid-gateway/admin-api.git
+[submodule "console-ui"]
+	path = console-ui
+	url = git@github.com:oxid-gateway/console-ui.git

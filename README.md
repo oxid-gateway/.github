@@ -172,7 +172,7 @@ O projeto **não** abrangerá:
 
 #### Representação dos Requisitos
 
-**[TODO: Inserir Diagrama de Casos de Uso UML]**
+![Caso de uso](./static/use_case.png)
 
 *Principais casos de uso:*
 - Gerenciar Rotas (CRUD)
@@ -207,7 +207,7 @@ O sistema é composto por três componentes principais:
 
 #### Modelos C4
 
-**[TODO: Inserir Diagrama C4 - Nível 1: Contexto do Sistema]**
+![C4 - 1](./static/c4_1.png)
 
 *Elementos principais:*
 - Usuário Administrador → Admin Console
@@ -216,7 +216,7 @@ O sistema é composto por três componentes principais:
 - Admin Console → Control Plane
 - Control Plane → PostgreSQL
 
-**[TODO: Inserir Diagrama C4 - Nível 2: Containers]**
+![C4 - 2](./static/c4_2.png)
 
 *Containers principais:*
 - Admin Console (Next.js SPA)
@@ -224,7 +224,7 @@ O sistema é composto por três componentes principais:
 - Proxy Engine (Rust Service + Pingora)
 - PostgreSQL Database
 
-**[TODO: Inserir Diagrama C4 - Nível 3: Componentes do Proxy Engine]**
+![C4 - 2](./static/c4_3.png)
 
 *Componentes principais:*
 - HTTP Server (Pingora)

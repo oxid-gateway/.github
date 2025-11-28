@@ -232,23 +232,29 @@ O sistema é composto por três componentes principais:
 - Debug Capture Module
 - gRPC Client (config sync)
 
-#### Mockups das Telas Principais
+#### Telas Principais
 
-**[TODO: Inserir Mockup - Tela de Listagem de Rotas]**
+![Upstreams](./static/upstreams.png)
 
 *Elementos principais:*
 - Tabela com: Path, Upstream
 - Botão "Nova Rota"
-- Filtros: Status, Método
 
-**[TODO: Inserir Mockup - Tela de Configuração de Rota]**
+![Routes](./static/routes.png)
 
 *Elementos principais:*
 - Formulário: Path Pattern, Upstream
 - Seção de breakpoints (ativar/desativar)
-- Botões: Salvar, Testar, Cancelar
+- Botões: Salvar, Cancelar
 
-**[TODO: Inserir Mockup - Console de Debug em Tempo Real]**
+![Consumers](./static/consumers.png)
+
+*Elementos principais:*
+- Formulário: Nome
+- Gerar API Key
+- Botões: Salvar, Cancelar
+
+![Debug image](./static/debug.jpg)
 
 *Elementos principais:*
 - Detalhes: Headers, Body, Metadata

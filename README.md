@@ -149,31 +149,24 @@ O projeto **não** abrangerá:
 - O sistema deve realizar roteamento de requisições sem necessidade de reinício
 - Deve suportar: path matching com wildcards
 
-**RF06 - Autenticação Básica**
-- O console administrativo deve requerer autenticação
-
-**RF07 - Gestão de Configurações**
+**RF06 - Gestão de Configurações**
 - O sistema deve permitir exportar/importar configurações
 
 #### Requisitos Não-Funcionais (RNF)
 
-**RNF01 - Performance**
-- Latência P99 < 10ms para requisições básicas
-- Throughput mínimo de 100.000 req/s em servidor 4 cores / 8GB RAM
-
-**RNF02 - Escalabilidade**
+**RNF01 - Escalabilidade**
 - Suporte a pelo menos 1.000 rotas configuradas
 - Capacidade de escalar horizontalmente (stateless proxy instances)
 
-**RNF03 - Usabilidade**
+**RNF02 - Usabilidade**
 - Interface responsiva compatível com desktop (1920x1080+)
 - Tempo de aprendizado < 30 minutos para usuários técnicos
 
-**RNF04 - Manutenibilidade**
+**RNF03 - Manutenibilidade**
 - Código modular com separação clara de responsabilidades
 - Cobertura de testes: 75% backend, 25% frontend
 
-**RNF05 - Portabilidade**
+**RNF04 - Portabilidade**
 - Suporte a deployment em: Kubernetes, Docker, bare metal
 - Compatibilidade com Linux (kernel 5.4+), arquiteturas x86_64 e ARM64
 
@@ -186,22 +179,6 @@ O projeto **não** abrangerá:
 - Configurar Breakpoints
 - Visualizar Requisições em Tempo Real
 - Exportar/Importar Configurações
-
-#### Aderência aos Requisitos da Linha de Projeto
-
-**Requisitos Obrigatórios da Linha Web Apps:**
-
-✅ **Sistema hospedado publicamente**: Deployment em AWS/GCP  
-✅ **Funcionalidades completas e reais**: Proxy funcional, debug, configuração via UI  
-✅ **Interface funcional e navegável**: Console Next.js  
-✅ **Arquitetura definida**: Microserviços com data plane (Rust) e control plane (Go)  
-✅ **Código em repositório com histórico**: GitHub com commits organizados  
-✅ **Pipeline CI/CD**: GitHub Actions para build, test, deploy  
-✅ **Documentação mínima**: RFC (este documento), diagramas C4  
-✅ **Cobertura de testes TDD**: 75% backend (Go + Rust), 25% frontend  
-✅ **Análise estática**: SonarCloud integrado no CI  
-✅ **Monitoramento**: Prometheus para métricas básicas  
-✅ **Três fluxos de negócio**: (1) Configuração de rota + proxy, (2) Debug com breakpoint, (3) Visualização de métricas  
 
 ---
 
@@ -260,23 +237,21 @@ O sistema é composto por três componentes principais:
 **[TODO: Inserir Mockup - Tela de Listagem de Rotas]**
 
 *Elementos principais:*
-- Tabela com: Path, Método, Upstream, Status, Ações
+- Tabela com: Path, Upstream
 - Botão "Nova Rota"
 - Filtros: Status, Método
 
 **[TODO: Inserir Mockup - Tela de Configuração de Rota]**
 
 *Elementos principais:*
-- Formulário: Path Pattern, Método HTTP, Upstream URL
+- Formulário: Path Pattern, Upstream
 - Seção de breakpoints (ativar/desativar)
 - Botões: Salvar, Testar, Cancelar
 
 **[TODO: Inserir Mockup - Console de Debug em Tempo Real]**
 
 *Elementos principais:*
-- Timeline de requisições capturadas
-- Detalhes: Headers, Body, Metadata (latência)
-- Filtros: Rota, Status Code
+- Detalhes: Headers, Body, Metadata
 
 #### Decisões e Alternativas Consideradas
 
@@ -325,11 +300,7 @@ O sistema é composto por três componentes principais:
 
 **Escalabilidade**:
 
-1. **Horizontal**:
-   - Proxy stateless: Múltiplas instâncias podem rodar independentemente
-   - Configuração compartilhada: Sync via gRPC garante consistência
-
-2. **Vertical**:
+1. **Vertical**:
    - Async I/O: Pingora usa Tokio (runtime assíncrono Rust)
    - Connection pooling: Reutilização de conexões com upstreams
 
@@ -378,21 +349,15 @@ O sistema é composto por três componentes principais:
 - **Next.js** (14+): Framework React
 - **Tailwind CSS** (3.4+): Framework CSS
 - **Shadcn/ui**: Biblioteca de componentes
-- **React Query** (5+): State management para APIs
 
 **Infraestrutura**
 - **PostgreSQL** (16+): Banco de dados relacional
-- **Prometheus** (2.48+): Métricas básicas
 
 #### Ferramentas de Desenvolvimento e Gestão
 
-**Versionamento e CI/CD**
-- **Git** + **GitHub**: Controle de versão
-- **GitHub Actions**: CI/CD automatizado
-
 **Desenvolvimento**
-- **VS Code** + **rust-analyzer**: IDE para Rust
-- **GoLand** / **VS Code**: IDE para Go
+- **NeoVim** + **rust-analyzer**: IDE para Rust
+- **NeoVim** / **gopls**: IDE para Go
 
 **Testes**
 - **cargo test**: Framework de testes Rust
@@ -400,7 +365,6 @@ O sistema é composto por três componentes principais:
 - **Jest** + **React Testing Library**: Testes JavaScript/TypeScript
 
 **Qualidade de Código**
-- **SonarCloud**: Análise estática
 - **clippy**: Linter Rust
 - **golangci-lint**: Linter Go
 - **ESLint** + **Prettier**: Linter JavaScript/TypeScript
@@ -438,11 +402,6 @@ O sistema é composto por três componentes principais:
 - **Impacto**: Alto
 - **Probabilidade**: Alta
 
-**R03 - Bypass de Autenticação**
-- **Descrição**: Falhas na validação podem permitir acesso não autorizado
-- **Impacto**: Alto
-- **Probabilidade**: Média
-
 #### Medidas de Mitigação
 
 **M01 - Proteção contra Injeção**
@@ -453,22 +412,15 @@ O sistema é composto por três componentes principais:
 - Redação automática de headers sensíveis (Authorization, Cookie) em logs
 - TTL: dados de debug expiram após 24h automaticamente
 
-**M03 - Autenticação Robusta**
-- JWT com tokens de curta duração
-- Validação de permissões em endpoints administrativos
-
-**M04 - Proteção de Comunicação**
+**M03 - Proteção de Comunicação**
 - TLS obrigatório em todas as conexões
 
 #### Normas e Boas Práticas Seguidas
 
 **OWASP API Security Top 10**
 - Validação de input em todas as entradas
-- Autenticação em endpoints administrativos
-- Rate limiting básico
 
 **LGPD**
-- Consentimento explícito para captura de debug
 - Retenção limitada (24h)
 - Minimização de dados capturados
 
@@ -490,74 +442,6 @@ O sistema é composto por três componentes principais:
 1. **Minimização de Dados**: Capturar apenas quando breakpoint ativo
 2. **Consentimento**: Checkbox ao ativar breakpoint
 3. **Retenção Limitada**: TTL de 24 horas para dados de debug
-4. **Segurança**: Controle de acesso via autenticação
-
----
-
-## 4. Próximos Passos
-
-### Cronograma Geral
-
-#### Portfólio I (Semestre 1) - Fundação e MVP
-
-**Sprint 1 (Semanas 1-3): Setup e Arquitetura**
-- Configuração de repositório GitHub com CI/CD
-- Setup de Docker Compose para desenvolvimento local
-- Estrutura base dos três componentes
-- Definição de schemas de banco de dados
-
-**Sprint 2 (Semanas 4-6): Core do Proxy**
-- Implementação do servidor HTTP com Pingora
-- Desenvolvimento da Radix Tree para roteamento
-- Sistema de configuração via gRPC
-- Testes unitários (cobertura 60%+)
-
-**Sprint 3 (Semanas 7-9): Control Plane**
-- API REST para CRUD de rotas
-- Servidor gRPC para comunicação com proxy
-- Autenticação JWT básica
-- Testes de integração
-
-**Sprint 4 (Semanas 10-12): Frontend MVP**
-- Interface de login
-- Tela de listagem e criação de rotas
-- Integração com API
-- Testes de interface (cobertura 25%)
-
-**Sprint 5 (Semanas 13-15): Integração e Deploy**
-- Pipeline CI/CD completo
-- Deploy em ambiente staging
-- Configuração de Prometheus
-- Documentação de deploy
-
-#### Portfólio II (Semestre 2) - Debug e Produção
-
-**Sprint 6 (Semanas 1-3): Sistema de Debug - Backend**
-- Implementação de breakpoints no control plane
-- Sistema de captura de requisições no proxy
-- Armazenamento temporário de dados
-- Redação automática de dados sensíveis
-
-**Sprint 7 (Semanas 4-6): Sistema de Debug - Frontend**
-- Interface de configuração de breakpoints
-- Console de debug em tempo real com WebSocket
-- Visualização detalhada de requisições
-- Filtros e busca
-
-**Sprint 8 (Semanas 7-9): Otimização**
-- Otimização de performance (profiling, benchmarking)
-- Testes de carga (k6)
-- Refinamento de UI/UX
-
-**Sprint 9 (Semanas 10-12): Finalização**
-- Deploy em produção
-- Documentação final
-- Preparação de demo
-
-**Sprint 10 (Semanas 13-15): Demo Day**
-- Criação de vídeo demonstrativo
-- Design de pôster
-- Apresentação final
 
 ### Definição de Marcos
 
@@ -578,36 +462,25 @@ O sistema é composto por três componentes principais:
 ### Repositórios
 
 **Proxy Engine (Rust)**
-- Repositório: [TODO: Adicionar link do GitHub]
+- Repositório: [Link do GitHub](https://github.com/oxid-gateway/reverse-proxy)
 - Branch principal: `main`
-- CI/CD: GitHub Actions
 
 **Control Plane (Go)**
-- Repositório: [TODO: Adicionar link do GitHub]
+- Repositório: [Link do GitHub](https://github.com/oxid-gateway/admin-api/tree/main)
 - Branch principal: `main`
-- CI/CD: GitHub Actions
 
 **Admin Console (Next.js)**
-- Repositório: [TODO: Adicionar link do GitHub]
+- Repositório: [Link do GitHub](https://github.com/oxid-gateway/console-ui/tree/main)
 - Branch principal: `main`
-- CI/CD: GitHub Actions
 
-### Ambientes
+### Acesso
 
-**Staging**
-- URL: [TODO: Adicionar URL do staging]
-- Admin Console: [TODO: Adicionar URL do console]
+- URL: [URL de acesso]
+- Vídeo de demonstração: [Vídeo no youtube]
 
-**Produção** (após conclusão)
-- URL: [TODO: Adicionar URL de produção]
-- Admin Console: [TODO: Adicionar URL do console]
+### Banner
 
-### Documentação Adicional
-
-- API Documentation (Swagger): [TODO: Adicionar link]
-- Diagramas C4: [TODO: Adicionar link]
-- Vídeo Demo: [TODO: Adicionar link]
-- Apresentação: [TODO: Adicionar link]
+![Banner](./static/banner.png)
 
 ---
 
@@ -627,8 +500,8 @@ O sistema é composto por três componentes principais:
 
 ```bash
 # Clonar repositório
-git clone [URL_DO_REPOSITORIO_PROXY]
-cd oxid-gateway-proxy
+git clone https://github.com/oxid-gateway/reverse-proxy.git
+cd reverse-proxy
 
 # Instalar dependências Rust (se não tiver)
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -637,21 +510,9 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 cargo build --release
 ```
 
-#### Configuração
-
-Criar arquivo `.env` na raiz:
-```env
-GRPC_SERVER_ADDRESS=127.0.0.1:50051
-PROXY_PORT=8080
-LOG_LEVEL=info
-```
-
 #### Executar
 
 ```bash
-# Modo desenvolvimento (com hot reload)
-cargo watch -x run
-
 # Modo produção
 cargo run --release
 ```
@@ -675,8 +536,8 @@ cargo clippy -- -D warnings
 
 ```bash
 # Clonar repositório
-git clone [URL_DO_REPOSITORIO_BACKEND]
-cd oxid-gateway-backend
+git clone https://github.com/oxid-gateway/admin-api.git
+cd admin-api
 
 # Instalar dependências
 go mod download
@@ -686,37 +547,21 @@ go mod download
 
 Criar arquivo `.env` na raiz:
 ```env
-DATABASE_URL=postgresql://user:password@localhost:5432/oxid_gateway
-GRPC_PORT=50051
-HTTP_PORT=8081
-JWT_SECRET=your-secret-key-here
+DATABASE_URL="postgresql://admin:admin@localhost:5432/oxidgateway"
 ```
 
 #### Setup do Banco de Dados
 
 ```bash
 # Subir PostgreSQL via Docker
-docker run -d \
-  --name oxid-postgres \
-  -e POSTGRES_USER=user \
-  -e POSTGRES_PASSWORD=password \
-  -e POSTGRES_DB=oxid_gateway \
-  -p 5432:5432 \
-  postgres:16
-
-# Rodar migrations
-go run cmd/migrate/main.go up
+docker-compose up
 ```
 
 #### Executar
 
 ```bash
 # Modo desenvolvimento
-go run cmd/server/main.go
-
-# Build e execução
-go build -o oxid-backend cmd/server/main.go
-./oxid-backend
+go run .
 ```
 
 #### Testes
@@ -739,21 +584,11 @@ golangci-lint run
 
 ```bash
 # Clonar repositório
-git clone [URL_DO_REPOSITORIO_FRONTEND]
+git clone https://github.com/oxid-gateway/console-ui.git
 cd oxid-gateway-console
 
 # Instalar dependências
 npm install
-# ou
-yarn install
-```
-
-#### Configuração
-
-Criar arquivo `.env.local` na raiz:
-```env
-NEXT_PUBLIC_API_URL=http://localhost:8081
-NEXT_PUBLIC_WS_URL=ws://localhost:8081
 ```
 
 #### Executar
@@ -761,12 +596,6 @@ NEXT_PUBLIC_WS_URL=ws://localhost:8081
 ```bash
 # Modo desenvolvimento
 npm run dev
-# ou
-yarn dev
-
-# Build para produção
-npm run build
-npm run start
 ```
 
 #### Testes
@@ -782,122 +611,7 @@ npm run test:coverage
 npm run lint
 ```
 
-### 4. Executar Stack Completo (Docker Compose)
-
-#### Setup com Docker Compose
-
-Criar arquivo `docker-compose.yml` na raiz do projeto:
-
-```yaml
-version: '3.8'
-
-services:
-  postgres:
-    image: postgres:16
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: oxid_gateway
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-  backend:
-    build: ./oxid-gateway-backend
-    ports:
-      - "8081:8081"
-      - "50051:50051"
-    environment:
-      DATABASE_URL: postgresql://user:password@postgres:5432/oxid_gateway
-      GRPC_PORT: 50051
-      HTTP_PORT: 8081
-    depends_on:
-      - postgres
-
-  proxy:
-    build: ./oxid-gateway-proxy
-    ports:
-      - "8080:8080"
-    environment:
-      GRPC_SERVER_ADDRESS: backend:50051
-      PROXY_PORT: 8080
-    depends_on:
-      - backend
-
-  frontend:
-    build: ./oxid-gateway-console
-    ports:
-      - "3000:3000"
-    environment:
-      NEXT_PUBLIC_API_URL: http://localhost:8081
-      NEXT_PUBLIC_WS_URL: ws://localhost:8081
-    depends_on:
-      - backend
-
-  prometheus:
-    image: prom/prometheus:latest
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-
-volumes:
-  postgres_data:
-```
-
-#### Executar
-
-```bash
-# Subir todos os serviços
-docker-compose up -d
-
-# Ver logs
-docker-compose logs -f
-
-# Parar todos os serviços
-docker-compose down
-```
-
-#### Acessar Aplicação
-
-- **Admin Console**: http://localhost:3000
-- **Backend API**: http://localhost:8081
-- **Proxy**: http://localhost:8080
-- **Prometheus**: http://localhost:9090
-
-### 5. Troubleshooting Comum
-
-**Problema**: Erro de conexão entre componentes
-```bash
-# Verificar se todos os serviços estão rodando
-docker-compose ps
-
-# Verificar logs de um serviço específico
-docker-compose logs backend
-```
-
-**Problema**: Migrations não aplicadas
-```bash
-# Entrar no container do backend
-docker-compose exec backend sh
-
-# Rodar migrations manualmente
-go run cmd/migrate/main.go up
-```
-
-**Problema**: Frontend não conecta com backend
-```bash
-# Verificar variáveis de ambiente
-cat .env.local
-
-# Verificar se backend está acessível
-curl http://localhost:8081/health
-```
-
----
-
-## 7. Referências
+## 4. Referências
 
 ### Frameworks e Bibliotecas
 

@@ -2,7 +2,7 @@
 
 Vídeo: [Youtube](https://youtu.be/xD-TeDgM9XE)
 
-** Documentação (README)**
+**Documentação (README)**
 - Repositório: [Link do GitHub](https://github.com/oxid-gateway/.github)
 - Branch principal: `main`
 

@@ -1,5 +1,7 @@
 # Oxid Gateway
 
+Vídeo: [Youtube](https://youtu.be/xD-TeDgM9XE)
+
 **RFC (README)**
 - Repositório: [Link do GitHub](https://github.com/oxid-gateway/.github)
 - Branch principal: `main`

@@ -4,6 +4,8 @@
 - **Nome do Estudante**: Gabriel Eduardo da Silva Rosa
 - **Curso**: Engenharia de Software
 
+Vídeo: [Youtube](https://youtu.be/xD-TeDgM9XE)
+
 ---
 
 # Resumo

@@ -119,7 +119,7 @@ O projeto **não** abrangerá:
 
 3. **Confiabilidade**:
    - Zero perda de requisições devido a falhas de debug
-   - Cobertura de testes: 75% backend, 25% frontend
+   - Cobertura de testes: 82% backend, 31% frontend
 
 ---
 

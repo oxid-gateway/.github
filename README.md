@@ -1,4 +1,4 @@
-# Capa
+# Oxid Gateway
 
 - **Título do Projeto**: Oxid Gateway - Sistema de Debug em Tempo Real para API Gateway
 - **Nome do Estudante**: Gabriel Eduardo da Silva Rosa
@@ -616,6 +616,11 @@ npm run test:coverage
 # Lint
 npm run lint
 ```
+
+##### Resultados dos Testes
+
+
+![Tests](./static/tests.png)
 
 ## 4. Referências
 
